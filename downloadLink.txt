@@ -1,0 +1,4 @@
+# Copy and paste the below link into your browser to download the password list
+# Place the file into the same folder as the checkPassword files
+
+https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt
