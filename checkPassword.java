@@ -12,26 +12,40 @@ public class checkPassword{
     public static void main(String args[]) throws Exception {
 
         Scanner in = new Scanner(System.in);
-        System.out.println("Enter your password:");
-        String userPassword = in.nextLine();
-
-        /* replace Scanner with this for hidden password input 
-        Console cons;
-        char[] passwd;
         String userPassword;
-        if ((cons = System.console()) != null &&
-            (passwd = cons.readPassword("%s", "Enter your password:\n")) != null) {
-            userPassword = new String(passwd);
-            java.util.Arrays.fill(passwd, ' ');
+        String hidden = "";       
+    
+        System.out.println("Would you like your input to be hidden? y/n:");
+        while (!hidden.matches("(?i)y|n")) {
+            hidden = in.nextLine();
+                
+            if (!hidden.matches("(?i)y|n")) {
+                System.out.println("y/n");
+            }
+        }
+
+        // replace Scanner with this for hidden password input
+        if (hidden.matches("(?i)y")) {
+            Console cons;
+            char[] passwd;
+                
+            if ((cons = System.console()) != null &&
+                (passwd = cons.readPassword("%s", "Enter your password:\n")) != null) {
+                    userPassword = new String(passwd);
+                    java.util.Arrays.fill(passwd, ' ');
+            }
+            else {
+                    System.out.println("Error: Could not set up system console for user input.");
+                    return;
+            }
         }
         else {
-            System.out.println("Error: Could not set up system console for user input.");
-            return;
+            System.out.println("\nEnter your password:");
+            userPassword = in.nextLine();
         }
-        */
+
 
         File file = new File("rockyou.txt");
-
         if (file.exists()){
 
             if (file.isFile() && file.canRead()){
@@ -45,8 +59,14 @@ public class checkPassword{
 
                     while ((filePassword = br.readLine()) != null){
                         //System.out.println(filePassword);
+
                         if (userPassword.equals(filePassword)){
-                            System.out.format("\nOh no! Your password (%s) is common!\n\n", userPassword);
+                            if (hidden.matches("(?i)y")) {
+                                System.out.println("\nOh no! Your password is common!\n");
+                            }
+                            else {
+                                System.out.format("\nOh no! Your password (%s) is common!\n\n", userPassword);
+                            }
                             return;
                         }
                     }
